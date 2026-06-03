@@ -1,3 +1,55 @@
+const temas = {
+
+    masculino: {
+        principal: "#2563eb",
+        secundario: "#172554",
+        titulo: "🏀 Campeonato Masculino"
+    },
+
+    femenino: {
+        principal: "#ec4899",
+        secundario: "#be185d",
+        titulo: "🏀 Campeonato Femenino"
+    }
+
+};
+let categoriaActual = "masculino";
+
+function aplicarTema() {
+
+    const tema = temas[categoriaActual];
+
+    document.documentElement.style.setProperty(
+        "--color-principal",
+        tema.principal
+    );
+
+    document.documentElement.style.setProperty(
+        "--color-secundario",
+        tema.secundario
+    );
+
+    document.getElementById("tituloCampeonato")
+        .textContent = tema.titulo;
+}
+
+function cambiarCategoria(categoria, boton) {
+
+    categoriaActual = categoria;
+
+    document
+        .querySelectorAll(".tab")
+        .forEach(tab => tab.classList.remove("active"));
+
+    boton.classList.add("active");
+
+    aplicarTema();
+
+    cargarResultados();
+    cargarProximos();
+
+}
+
 const logos = {
     "Tigres": "logos/tigres.png",
     "Leones": "logos/leones.png",
@@ -11,6 +63,7 @@ const logos = {
 
 cargarResultados();
 cargarProximos();
+aplicarTema();
 
 function obtenerSeparador(texto) {
 
@@ -21,7 +74,7 @@ function obtenerSeparador(texto) {
 
 function cargarResultados() {
 
-    fetch("data/resultados.csv")
+    fetch(`data/${categoriaActual}/resultados.csv?v=${Date.now()}`)
         .then(r => r.text())
         .then(csv => {
 
@@ -155,44 +208,56 @@ function generarTabla(equipos) {
 
     tbody.innerHTML = "";
 
-    const ranking =
-        Object.entries(equipos)
-            .sort((a, b) => {
+    const ranking = Object.entries(equipos);
 
-                if (b[1].pts !== a[1].pts) {
-                    return b[1].pts - a[1].pts;
-                }
+    if (ranking.length === 0) {
 
-                return (b[1].pf - b[1].pc) - (a[1].pf - a[1].pc);
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="9">
+                    No hay equipos registrados.
+                </td>
+            </tr>
+        `;
 
-            });
+        return;
+    }
+
+    ranking.sort((a, b) => {
+
+        if (b[1].pts !== a[1].pts) {
+            return b[1].pts - a[1].pts;
+        }
+
+        return (b[1].pf - b[1].pc) - (a[1].pf - a[1].pc);
+
+    });
 
     ranking.forEach(([nombre, d], i) => {
 
-        const tr =
-            document.createElement("tr");
+        const tr = document.createElement("tr");
 
         if (i === 0) tr.classList.add("top1");
         if (i === 1) tr.classList.add("top2");
         if (i === 2) tr.classList.add("top3");
 
         tr.innerHTML = `
-        <td>${i + 1}</td>
+            <td>${i + 1}</td>
 
-        <td>
-            <div class="equipo-cell">
-                <img src="${logos[nombre]}" class="logo-equipo">
-                <span>${nombre}</span>
-            </div>
-        </td>
+            <td>
+                <div class="equipo-cell">
+                    <img src="${logos[nombre]}" class="logo-equipo">
+                    <span>${nombre}</span>
+                </div>
+            </td>
 
-        <td>${d.pj}</td>
-        <td>${d.pg}</td>
-        <td>${d.pp}</td>
-        <td>${d.pf}</td>
-        <td>${d.pc}</td>
-        <td>${d.pf - d.pc}</td>
-        <td>${d.pts}</td>
+            <td>${d.pj}</td>
+            <td>${d.pg}</td>
+            <td>${d.pp}</td>
+            <td>${d.pf}</td>
+            <td>${d.pc}</td>
+            <td>${d.pf - d.pc}</td>
+            <td>${d.pts}</td>
         `;
 
         tbody.appendChild(tr);
@@ -208,21 +273,34 @@ function generarPodio(equipos) {
 
     podio.innerHTML = "";
 
-    const ranking = Object.entries(equipos)
-        .sort((a, b) => {
+    const ranking = Object.entries(equipos);
 
-            if (b[1].pts !== a[1].pts) {
-                return b[1].pts - a[1].pts;
-            }
+    if (ranking.length === 0) {
 
-            return (b[1].pf - b[1].pc) - (a[1].pf - a[1].pc);
+        podio.innerHTML = `
+            <div class="mensaje-vacio">
+                No hay clasificación disponible.
+            </div>
+        `;
 
-        })
-        .slice(0, 3);
+        return;
+    }
+
+    ranking.sort((a, b) => {
+
+        if (b[1].pts !== a[1].pts) {
+            return b[1].pts - a[1].pts;
+        }
+
+        return (b[1].pf - b[1].pc) - (a[1].pf - a[1].pc);
+
+    });
+
+    const top3 = ranking.slice(0, 3);
 
     const medallas = ["🥇", "🥈", "🥉"];
 
-    ranking.forEach(([nombre, d], i) => {
+    top3.forEach(([nombre, d], i) => {
 
         podio.innerHTML += `
 
@@ -250,6 +328,16 @@ function generarResultados(partidos) {
         document.getElementById("resultados");
 
     div.innerHTML = "";
+    if (partidos.length === 0) {
+
+        div.innerHTML = `
+        <div class="mensaje-vacio">
+            No hay resultados registrados.
+        </div>
+    `;
+
+        return;
+    }
 
     partidos.reverse().forEach(p => {
 
@@ -291,7 +379,7 @@ function generarResultados(partidos) {
 
 function cargarProximos() {
 
-    fetch("data/proximos_partidos.csv")
+    fetch(`data/${categoriaActual}/proximos_partidos.csv?v=${Date.now()}`)
         .then(r => r.text())
         .then(csv => {
 
@@ -299,9 +387,20 @@ function cargarProximos() {
                 csv.trim().split("\n");
 
             filas.shift();
+            if (filas.length === 0 || (filas.length === 1 && filas[0].trim() === "")) {
 
+                div.innerHTML = `
+        <div class="mensaje-vacio">
+            No hay próximos partidos programados.
+        </div>
+    `;
+
+                return;
+            }
             const div =
                 document.getElementById("proximosPartidos");
+
+            div.innerHTML = "";
 
             filas.forEach(fila => {
 

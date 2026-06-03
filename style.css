@@ -1,3 +1,8 @@
+:root {
+    --color-principal: #2563eb;
+    --color-secundario: #172554;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -13,7 +18,9 @@ body {
 .hero {
     padding: 60px 20px;
     text-align: center;
-    background: linear-gradient(135deg, #0f172a, #172554);
+    background: linear-gradient(135deg,
+            var(--color-secundario),
+            var(--color-principal));
 }
 
 .hero h1 {
@@ -71,7 +78,7 @@ table {
 }
 
 th {
-    background: #2563eb;
+    background: var(--color-principal);
     padding: 15px;
 }
 
@@ -155,7 +162,7 @@ tr:nth-child(even) {
 .versus {
     font-size: 1.4rem;
     font-weight: 700;
-    color: #60a5fa;
+    color: var(--color-principal);
 }
 
 footer {
@@ -174,4 +181,39 @@ footer {
         width: 100%;
     }
 
+}
+
+.tabs {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 30px 0;
+}
+
+.tab {
+
+    border: none;
+    padding: 12px 25px;
+
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    background: #1e293b;
+    color: white;
+
+    font-weight: 600;
+}
+
+.tab.active {
+    background: var(--color-principal);
+}
+
+.mensaje-vacio {
+    width: 100%;
+    background: #16213e;
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    opacity: .8;
 }

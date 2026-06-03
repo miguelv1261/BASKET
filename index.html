@@ -19,12 +19,24 @@
     <header class="hero">
 
         <div class="hero-content">
-            <h1>🏀 Campeonato de Basket</h1>
+            <h1 id="tituloCampeonato">
+                🏀 Campeonato Masculino
+            </h1>
             <p>Resultados, clasificación y próximos encuentros</p>
         </div>
 
     </header>
+    <div class="tabs">
 
+        <button class="tab active" onclick="cambiarCategoria('masculino', this)">
+            Masculino
+        </button>
+
+        <button class="tab" onclick="cambiarCategoria('femenino', this)">
+            Femenino
+        </button>
+
+    </div>
     <section class="podio-section">
 
         <h2>🏆 Top 3</h2>
