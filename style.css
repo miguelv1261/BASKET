@@ -1,134 +1,177 @@
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-body{
-    font-family:Arial, Helvetica, sans-serif;
-    background:#0f172a;
-    color:white;
-    padding:20px;
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #08152f;
+    color: white;
 }
 
-header{
-    text-align:center;
-    margin-bottom:40px;
+.hero {
+    padding: 60px 20px;
+    text-align: center;
+    background: linear-gradient(135deg, #0f172a, #172554);
 }
 
-header h1{
-    font-size:3rem;
-    margin-bottom:10px;
+.hero h1 {
+    font-size: 3rem;
+    margin-bottom: 10px;
 }
 
-header p{
-    color:#cbd5e1;
+.hero p {
+    opacity: .8;
 }
 
-h2{
-    margin-bottom:20px;
+section {
+    padding: 30px;
+    max-width: 1400px;
+    margin: auto;
 }
 
-.podio{
-    display:flex;
-    justify-content:center;
-    gap:20px;
-    flex-wrap:wrap;
-    margin-bottom:40px;
+h2 {
+    margin-bottom: 20px;
 }
 
-.podio-card{
-    background:#1e293b;
-    padding:20px;
-    border-radius:15px;
-    min-width:180px;
-    text-align:center;
-    box-shadow:0 5px 15px rgba(0,0,0,.3);
+.podio {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    flex-wrap: wrap;
 }
 
-.podio-card .emoji{
-    font-size:3rem;
+.podio-card {
+    background: #1e293b;
+    padding: 25px;
+    border-radius: 16px;
+    text-align: center;
+    width: 220px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .3);
 }
 
-.podio-card h3{
-    margin-top:10px;
+.podio-card img {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    margin: 15px 0;
 }
 
-.podio-card p{
-    color:#94a3b8;
+.table-container {
+    overflow-x: auto;
 }
 
-.table-container{
-    overflow-x:auto;
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #16213e;
+    border-radius: 15px;
+    overflow: hidden;
 }
 
-table{
-    width:100%;
-    border-collapse:collapse;
-    background:#1e293b;
-    border-radius:12px;
-    overflow:hidden;
-    margin-bottom:40px;
+th {
+    background: #2563eb;
+    padding: 15px;
 }
 
-th{
-    background:#2563eb;
+td {
+    padding: 15px;
+    text-align: center;
 }
 
-th,td{
-    padding:14px;
-    text-align:center;
+tr:nth-child(even) {
+    background: #1f2a48;
 }
 
-tbody tr:nth-child(even){
-    background:#334155;
+.top1 {
+    background: rgba(255, 215, 0, .15);
 }
 
-.top1{
-    background:rgba(255,215,0,.15);
+.top2 {
+    background: rgba(192, 192, 192, .12);
 }
 
-.top2{
-    background:rgba(192,192,192,.15);
+.top3 {
+    background: rgba(205, 127, 50, .12);
 }
 
-.top3{
-    background:rgba(205,127,50,.15);
+.equipo-cell {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
-.resultados{
-    display:grid;
-    grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
-    gap:15px;
+.logo-equipo {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
 }
 
-.partido{
-    background:#1e293b;
-    padding:18px;
-    border-radius:12px;
+.resultados-grid,
+.proximos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 20px;
 }
 
-.fecha{
-    color:#94a3b8;
-    font-size:.9rem;
-    margin-bottom:10px;
+.partido,
+.partido-futuro {
+    background: #16213e;
+    padding: 20px;
+    border-radius: 15px;
 }
 
-.marcador{
-    font-size:1.2rem;
-    font-weight:bold;
+.fecha {
+    font-size: .9rem;
+    opacity: .7;
+    margin-bottom: 15px;
 }
 
-footer{
-    margin-top:40px;
-    text-align:center;
-    color:#94a3b8;
+.vs {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-@media(max-width:768px){
+.team {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
 
-    header h1{
-        font-size:2rem;
+.team img {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+}
+
+.score {
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+.versus {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #60a5fa;
+}
+
+footer {
+    text-align: center;
+    padding: 30px;
+    opacity: .7;
+}
+
+@media(max-width:768px) {
+
+    .hero h1 {
+        font-size: 2rem;
+    }
+
+    .podio-card {
+        width: 100%;
     }
 
 }

@@ -7,31 +7,44 @@
     <title>Campeonato de Basket</title>
 
     <link rel="stylesheet" href="style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
 </head>
 
 <body>
 
-    <header>
-        <h1>🏀 Campeonato de Basket</h1>
-        <p>Tabla de posiciones y resultados oficiales</p>
+    <header class="hero">
+
+        <div class="hero-content">
+            <h1>🏀 Campeonato de Basket</h1>
+            <p>Resultados, clasificación y próximos encuentros</p>
+        </div>
+
     </header>
 
     <section class="podio-section">
+
         <h2>🏆 Top 3</h2>
 
-        <div id="podio" class="podio">
-        </div>
+        <div id="podio" class="podio"></div>
+
     </section>
 
-    <section class="tabla-section">
+    <section>
 
         <h2>📊 Tabla de Posiciones</h2>
 
         <div class="table-container">
+
             <table>
+
                 <thead>
+
                     <tr>
-                        <th>Pos</th>
+                        <th>#</th>
                         <th>Equipo</th>
                         <th>PJ</th>
                         <th>PG</th>
@@ -41,12 +54,22 @@
                         <th>DIF</th>
                         <th>PTS</th>
                     </tr>
+
                 </thead>
 
-                <tbody id="tabla-body">
-                </tbody>
+                <tbody id="tabla-body"></tbody>
+
             </table>
+
         </div>
+
+    </section>
+
+    <section>
+
+        <h2>📅 Próximos Partidos</h2>
+
+        <div id="proximosPartidos" class="proximos-grid"></div>
 
     </section>
 
@@ -54,8 +77,7 @@
 
         <h2>🏀 Resultados</h2>
 
-        <div id="resultados" class="resultados">
-        </div>
+        <div id="resultados" class="resultados-grid"></div>
 
     </section>
 
