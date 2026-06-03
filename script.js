@@ -88,6 +88,8 @@ function cargarResultados() {
 
             filas.forEach(fila => {
 
+                if (!fila.trim()) return;
+
                 const sep = obtenerSeparador(fila);
 
                 const [
@@ -98,7 +100,15 @@ function cargarResultados() {
                     puntosVisitante,
                     estado = "NORMAL"
                 ] = fila.split(sep);
-
+                if (
+                    !fecha ||
+                    !local ||
+                    !visitante ||
+                    puntosLocal === undefined ||
+                    puntosVisitante === undefined
+                ) {
+                    return;
+                }
                 const pl = Number(puntosLocal);
                 const pv = Number(puntosVisitante);
 
@@ -404,6 +414,8 @@ function cargarProximos() {
 
             filas.forEach(fila => {
 
+                if (!fila.trim()) return;
+
                 const sep =
                     obtenerSeparador(fila);
 
@@ -413,7 +425,14 @@ function cargarProximos() {
                     local,
                     visitante
                 ] = fila.split(sep);
-
+                if (
+                    !fecha ||
+                    !hora ||
+                    !local ||
+                    !visitante
+                ) {
+                    return;
+                }
                 div.innerHTML += `
 
             <div class="partido-futuro">
