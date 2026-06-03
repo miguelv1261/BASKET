@@ -27,6 +27,7 @@ function cargarResultados() {
 
             const filas = csv.trim().split("\n");
 
+            // Eliminar encabezado
             filas.shift();
 
             const equipos = {};
@@ -41,17 +42,22 @@ function cargarResultados() {
                     local,
                     puntosLocal,
                     visitante,
-                    puntosVisitante
+                    puntosVisitante,
+                    estado = "NORMAL"
                 ] = fila.split(sep);
+
+                const pl = Number(puntosLocal);
+                const pv = Number(puntosVisitante);
 
                 partidos.push({
                     fecha,
                     local,
                     visitante,
-                    puntosLocal: Number(puntosLocal),
-                    puntosVisitante: Number(puntosVisitante)
+                    puntosLocal: pl,
+                    puntosVisitante: pv
                 });
 
+                // Crear equipos si no existen
                 [local, visitante].forEach(eq => {
 
                     if (!equipos[eq]) {
@@ -69,28 +75,64 @@ function cargarResultados() {
 
                 });
 
+                // Partidos jugados
                 equipos[local].pj++;
                 equipos[visitante].pj++;
 
-                equipos[local].pf += Number(puntosLocal);
-                equipos[local].pc += Number(puntosVisitante);
+                // Puntos a favor y en contra
+                equipos[local].pf += pl;
+                equipos[local].pc += pv;
 
-                equipos[visitante].pf += Number(puntosVisitante);
-                equipos[visitante].pc += Number(puntosLocal);
+                equipos[visitante].pf += pv;
+                equipos[visitante].pc += pl;
 
-                if (Number(puntosLocal) > Number(puntosVisitante)) {
+                // ===== SISTEMA DE PUNTUACIÓN =====
+
+                if (estado === "NO_PRESENTA_VISITA") {
 
                     equipos[local].pg++;
                     equipos[local].pts += 2;
 
                     equipos[visitante].pp++;
+                    // visitante recibe 0 puntos
 
-                } else {
+                }
+                else if (estado === "NO_PRESENTA_LOCAL") {
 
                     equipos[visitante].pg++;
                     equipos[visitante].pts += 2;
 
                     equipos[local].pp++;
+                    // local recibe 0 puntos
+
+                }
+                else {
+
+                    // Partido normal
+
+                    if (pl > pv) {
+
+                        // gana local
+                        equipos[local].pg++;
+                        equipos[local].pts += 2;
+
+                        // pierde visitante
+                        equipos[visitante].pp++;
+                        equipos[visitante].pts += 1;
+
+                    }
+                    else if (pv > pl) {
+
+                        // gana visitante
+                        equipos[visitante].pg++;
+                        equipos[visitante].pts += 2;
+
+                        // pierde local
+                        equipos[local].pp++;
+                        equipos[local].pts += 1;
+
+                    }
+
                 }
 
             });
@@ -99,6 +141,9 @@ function cargarResultados() {
             generarPodio(equipos);
             generarResultados(partidos);
 
+        })
+        .catch(error => {
+            console.error("Error al cargar resultados:", error);
         });
 
 }
@@ -112,7 +157,15 @@ function generarTabla(equipos) {
 
     const ranking =
         Object.entries(equipos)
-            .sort((a, b) => b[1].pts - a[1].pts);
+            .sort((a, b) => {
+
+                if (b[1].pts !== a[1].pts) {
+                    return b[1].pts - a[1].pts;
+                }
+
+                return (b[1].pf - b[1].pc) - (a[1].pf - a[1].pc);
+
+            });
 
     ranking.forEach(([nombre, d], i) => {
 
@@ -155,10 +208,17 @@ function generarPodio(equipos) {
 
     podio.innerHTML = "";
 
-    const ranking =
-        Object.entries(equipos)
-            .sort((a, b) => b[1].pts - a[1].pts)
-            .slice(0, 3);
+    const ranking = Object.entries(equipos)
+        .sort((a, b) => {
+
+            if (b[1].pts !== a[1].pts) {
+                return b[1].pts - a[1].pts;
+            }
+
+            return (b[1].pf - b[1].pc) - (a[1].pf - a[1].pc);
+
+        })
+        .slice(0, 3);
 
     const medallas = ["🥇", "🥈", "🥉"];
 
